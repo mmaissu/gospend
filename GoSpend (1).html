@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoSpend - Совместный учёт расходов</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-custom-brown {
+            background-color: #744b98;
+        }
+        .bg-light-brown {
+            background-color: #68477e;
+        }
+        .text-custom-brown {
+            color: #7f4e96;
+        }
+        .hover-brown:hover {
+            background-color: #725095;
+        }
+        .bg-gradient-brown {
+            background: linear-gradient(to right,#724e8e , #44185b);
+        }
+    </style>
+</head>
+<script>
+    const translations = {
+        "ru": {
+            "title": "Управляйте общими расходами легко",
+            "description": "GoSpend упрощает учёт общего бюджета для друзей, семей, соседей и коллег"
+        },
+        "en": {
+            "title": "Manage shared expenses easily",
+            "description": "GoSpend simplifies budgeting for friends, families, neighbors, and colleagues"
+        }
+    };
+
+    document.getElementById("language-select").addEventListener("change", function () {
+        let lang = this.value;
+        localStorage.setItem("language", lang); // Сохранение выбора языка
+        applyLanguage(lang);
+    });
+
+    function applyLanguage(lang) {
+        document.getElementById("title").innerText = translations[lang]["title"];
+        document.getElementById("description").innerText = translations[lang]["description"];
+    }
+
+    // Загружаем язык при открытии страницы
+    let savedLang = localStorage.getItem("language") || "ru";
+    document.getElementById("language-select").value = savedLang;
+    applyLanguage(savedLang);
+</script>
+
+<body class="bg-yellow-50">
+    
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-custom-brown">GoSpend</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#features" class="text-gray-700 hover:text-custom-brown">Возможности</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-custom-brown">Как это работает</a>
+                    <button class="bg-custom-brown text-white px-4 py-2 rounded-lg hover-brown"
+                         onclick="window.location.href='registration.html';">
+                        Начать бесплатно
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   
+    <div class="bg-gradient-brown text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-4">
+                    Управляйте общими расходами легко
+                </h1>
+                <p class="text-xl mb-8">
+                    GoSpend упрощает учёт общего бюджета для друзей, семей, соседей и коллег
+                </p>
+                <button class="bg-white text-custom-brown px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100">
+                    Попробовать сейчас
+                </button>
+            </div>
+        </div>
+    </div>
+
+   
+    <div id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-custom-brown">Почему GoSpend?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6">
+                    <i class="fas fa-plus-circle text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Простое добавление расходов</h3>
+                    <p class="text-gray-600">Укажите сумму, категорию и плательщика. Система автоматически разделит расходы.</p>
+                </div>
+                <div class="text-center p-6">
+                    <i class="fas fa-balance-scale text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Сводный баланс</h3>
+                    <p class="text-gray-600">Всегда знайте, кто кому сколько должен в реальном времени.</p>
+                </div>
+                <div class="text-center p-6">
+                    <i class="fas fa-bell text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Уведомления</h3>
+                    <p class="text-gray-600">Получайте напоминания о новых расходах и неоплаченных долгах.</p>
+                </div>
+                <div class="text-center p-6">
+                    <i class="fas fa-chart-pie text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Аналитика расходов</h3>
+                    <p class="text-gray-600">Анализируйте свои траты по категориям и периодам.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="py-16 bg-light-brown bg-opacity-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-custom-brown"></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <i class="fas fa-users text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Друзья</h3>
+                    <p class="text-gray-600">Идеально для совместных путешествий и отдыха</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <i class="fas fa-home text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Семьи</h3>
+                    <p class="text-gray-600">Удобное ведение общего семейного бюджета</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <i class="fas fa-building text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Соседи</h3>
+                    <p class="text-gray-600">Простой учёт коммунальных платежей</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <i class="fas fa-briefcase text-4xl text-custom-brown mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-custom-brown">Коллеги</h3>
+                    <p class="text-gray-600">Организация корпоративных мероприятий</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="bg-custom-brown text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-4">Готовы начать?</h2>
+            <p class="text-xl mb-8">Присоединяйтесь к тысячам пользователей, которые уже упростили свои расчеты</p>
+            <button class="bg-white text-custom-brown px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100">
+                Создать группу бесплатно
+            </button>
+        </div>
+    </div>
+
+  
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">GoSpend</h3>
+                    <p class="text-gray-400">Упрощаем учёт общих расходов</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Контакты</h3>
+                    <p class="text-gray-400">gospend@gmail.com</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Соцсети</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/almau_edu?igsh=aGxveHo3cW4zdTAz" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
