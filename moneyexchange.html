@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер валют</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right,#724e8e , #44185b);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #E6E6FA;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input {
+            background: white;
+            color: black;
+        }
+        button {
+            background: #8A2BE2;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #7B1FA2;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        h2 {
+        color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Конвертер валют</h2>
+        <input type="number" id="amount" placeholder="Введите сумму" min="1">
+        <select id="fromCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="KZT">KZT</option>
+        </select>
+        <select id="toCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="KZT">KZT</option>
+        </select>
+        <button onclick="convertCurrency()">Конвертировать</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const exchangeRates = {
+            "USD": { "EUR": 0.92, "RUB": 90, "KZT": 450 },
+            "EUR": { "USD": 1.09, "RUB": 98, "KZT": 490 },
+            "RUB": { "USD": 0.011, "EUR": 0.0102, "KZT": 5 },
+            "KZT": { "USD": 0.0022, "EUR": 0.002, "RUB": 0.2 }
+        };
+
+        function convertCurrency() {
+            let amount = document.getElementById('amount').value;
+            let fromCurrency = document.getElementById('fromCurrency').value;
+            let toCurrency = document.getElementById('toCurrency').value;
+            let resultDiv = document.getElementById('result');
+
+            if (amount <= 0 || isNaN(amount)) {
+                resultDiv.innerHTML = "Введите корректную сумму";
+                return;
+            }
+
+            if (fromCurrency === toCurrency) {
+                resultDiv.innerHTML = `Результат: ${amount} ${toCurrency}`;
+                return;
+            }
+
+            let rate = exchangeRates[fromCurrency][toCurrency];
+            let convertedAmount = (amount * rate).toFixed(2);
+            resultDiv.innerHTML = `Результат: ${convertedAmount} ${toCurrency}`;
+        }
+    </script>
+</body>
+</html>

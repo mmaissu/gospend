@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор кредита</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #724e8e, #44185b);
+            color: black;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background:  #E6E6FA;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input {
+            background: white;
+            color: black;
+        }
+        button {
+            background: #8A2BE2;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #7B1FA2;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Калькулятор кредита</h2>
+        <input type="number" id="loanAmount" placeholder="Сумма кредита (в тенге)" min="1">
+        <input type="number" id="interestRate" placeholder="Процентная ставка (в % годовых)" min="0" step="0.1">
+        <input type="number" id="loanTerm" placeholder="Срок кредита (в месяцах)" min="1">
+        <button onclick="calculateLoan()">Рассчитать</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateLoan() {
+            let amount = parseFloat(document.getElementById('loanAmount').value);
+            let interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+            let term = parseInt(document.getElementById('loanTerm').value);
+            let resultDiv = document.getElementById('result');
+
+            if (amount <= 0 || isNaN(amount) || interestRate < 0 || isNaN(interestRate) || term <= 0 || isNaN(term)) {
+                resultDiv.innerHTML = "Введите корректные данные";
+                return;
+            }
+
+            let monthlyPayment = (amount * interestRate) / (1 - Math.pow(1 + interestRate, -term));
+            let totalPayment = monthlyPayment * term;
+            let totalInterest = totalPayment - amount;
+
+            resultDiv.innerHTML = `
+                <p>Ежемесячный платеж: ${monthlyPayment.toFixed(2)} тг.</p>
+                <p>Общая сумма выплат: ${totalPayment.toFixed(2)} тг.</p>
+                <p>Переплата по процентам: ${totalInterest.toFixed(2)} тг.</p>
+            `;
+        }
+    </script>
+</body>
+</html>

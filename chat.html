@@ -153,6 +153,7 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <!-- Список участников -->
         <div class="card members-list">
@@ -266,11 +267,11 @@
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const messages = document.getElementById('chatMessages');
-            
+
             if (input.value.trim()) {
                 const now = new Date();
                 const time = now.getHours() + ':' + now.getMinutes().toString().padStart(2, '0');
-                
+
                 const messageHtml = `
                     <div class="message">
                         <div class="message-header">
@@ -282,7 +283,7 @@
                         </div>
                     </div>
                 `;
-                
+
                 messages.innerHTML += messageHtml;
                 messages.scrollTop = messages.scrollHeight;
                 input.value = '';
@@ -294,11 +295,11 @@
             const category = document.getElementById('expenseCategory');
             const payer = document.getElementById('expensePayer');
             const expenses = document.getElementById('expensesList');
-            
+
             if (amount && category.value && payer.value) {
                 const now = new Date();
                 const date = now.toLocaleDateString();
-                
+
                 const expenseHtml = `
                     <div class="expense-item">
                         <div>
@@ -311,9 +312,9 @@
                         </div>
                     </div>
                 `;
-                
+
                 expenses.innerHTML = expenseHtml + expenses.innerHTML;
-                
+
                 // Очистка формы
                 document.getElementById('expenseAmount').value = '';
                 category.value = '';

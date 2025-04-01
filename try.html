@@ -1,58 +1,117 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="icon" type="image/svg+xml" href="иконка_круглая.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор бюджета</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background: linear-gradient(to right,#724e8e , #44185b);
-
+            background: linear-gradient(to right, #724e8e, #44185b);
         }
-        
+        .salary-input {
+            background-color: #f0f8ff;
+            border: 2px solid #4f46e5;
+            font-weight: bold;
+        }
     </style>
     <script>
         function calculateBudget() {
             let salary = parseFloat(document.getElementById("salary").value) || 0;
             let rent = parseFloat(document.getElementById("rent").value) || 0;
+            let utilities = parseFloat(document.getElementById("utilities").value) || 0;
             let food = parseFloat(document.getElementById("food").value) || 0;
             let clothing = parseFloat(document.getElementById("clothing").value) || 0;
+            let medical = parseFloat(document.getElementById("medical").value) || 0;
+            let sports = parseFloat(document.getElementById("sports").value) || 0;
+            let education = parseFloat(document.getElementById("education").value) || 0;
+            let transport = parseFloat(document.getElementById("transport").value) || 0;
+            let communication = parseFloat(document.getElementById("communication").value) || 0;
+            let loans = parseFloat(document.getElementById("loans").value) || 0;
+            let insurance = parseFloat(document.getElementById("insurance").value) || 0;
+            let gifts = parseFloat(document.getElementById("gifts").value) || 0;
+            let entertainment = parseFloat(document.getElementById("entertainment").value) || 0;
+            let vacation = parseFloat(document.getElementById("vacation").value) || 0;
             let other = parseFloat(document.getElementById("other").value) || 0;
 
-            let totalExpenses = rent + food + clothing + other;
+            let totalExpenses = rent + utilities + food + clothing + medical + sports + education + transport + communication + loans + insurance + gifts + entertainment + vacation + other;
             let remaining = salary - totalExpenses;
 
-            document.getElementById("total-expenses").textContent = `Общие расходы: ${totalExpenses}₽`;
-            document.getElementById("remaining").textContent = `Остаток: ${remaining}₽`;
+            document.getElementById("total-expenses").textContent = `Общие расходы: ${totalExpenses.toLocaleString()}₸`;
+            document.getElementById("remaining").textContent = `Остаток: ${remaining.toLocaleString()}₸`;
         }
     </script>
 </head>
 <body class="min-h-screen flex items-center justify-center">
 
-    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 class="text-xl font-bold text-center mb-4">Калькулятор личного и семейного бюджета</h2>
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+        <h2 class="text-xl font-bold text-center mb-4">Калькулятор личного и семейного бюджета </h2>
+        <p class="text-sm text-center text-gray-600 mb-4">Если по одному из пунктов расходы отсутствуют, можно ничего не писать или просто указать 0.</p>
 
+        <!-- Зарплата -->
         <div class="mb-4">
             <label class="block font-semibold">Ежемесячные доходы после вычета налога</label>
-            <input type="number" id="salary" placeholder="Введите зарплату" class="w-full p-2 border rounded mt-1">
+            <input type="number" id="salary" placeholder="Введите зарплату" class="w-full p-2 border rounded mt-1 salary-input">
         </div>
 
+        <!-- Расходы -->
         <div class="mb-4">
             <label class="block font-semibold">Жильё</label>
             <input type="number" id="rent" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
         </div>
-
+        <div class="mb-4">
+            <label class="block font-semibold">Коммунальные услуги</label>
+            <input type="number" id="utilities" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
         <div class="mb-4">
             <label class="block font-semibold">Питание</label>
             <input type="number" id="food" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
         </div>
-
         <div class="mb-4">
             <label class="block font-semibold">Одежда</label>
             <input type="number" id="clothing" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
         </div>
-
+        <div class="mb-4">
+            <label class="block font-semibold">Медицина</label>
+            <input type="number" id="medical" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Спорт</label>
+            <input type="number" id="sports" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Учёба</label>
+            <input type="number" id="education" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Транспорт</label>
+            <input type="number" id="transport" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Услуги связи</label>
+            <input type="number" id="communication" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Кредиты</label>
+            <input type="number" id="loans" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Страховки</label>
+            <input type="number" id="insurance" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Подарки</label>
+            <input type="number" id="gifts" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Развлечения</label>
+            <input type="number" id="entertainment" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Отдых</label>
+            <input type="number" id="vacation" placeholder="Сумма" class="w-full p-2 border rounded mt-1">
+        </div>
         <div class="mb-4">
             <label class="block font-semibold">Прочие расходы</label>
             <input type="number" id="other" placeholder="Сумма" class="w-full p-2 border rounded mt-1">

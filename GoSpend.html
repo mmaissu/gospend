@@ -10,6 +10,14 @@
 
     <link rel="icon" type="image/svg+xml" href="иконка_круглая.png">
 
+    <nav>
+    <a href="index.html">Главная</a>
+    <a href="about.html">О нас</a>
+    <span id="user-info"></span>  <!-- Здесь будет отображаться пользователь -->
+    <button id="logout-button" style="display: none;">Выйти</button>
+</nav>
+
+
     <style>
         .bg-custom-brown {
             background-color: #744b98;
@@ -55,6 +63,25 @@
     let savedLang = localStorage.getItem("language") || "ru";
     document.getElementById("language-select").value = savedLang;
     applyLanguage(savedLang);
+
+    document.addEventListener("DOMContentLoaded", function() {
+    let username = localStorage.getItem("username");
+    let userInfo = document.getElementById("user-info");
+    let logoutButton = document.getElementById("logout-button");
+
+    if (username) {
+        userInfo.textContent = "Вы вошли как: " + username;
+        logoutButton.style.display = "inline";  // Показываем кнопку "Выйти"
+    } else {
+        userInfo.textContent = "Гость";
+    }
+
+    logoutButton.addEventListener("click", function() {
+        localStorage.removeItem("username");  // Удаляем пользователя
+        window.location.reload();  // Перезагружаем страницу
+    });
+});
+
 </script>
 
 <body class="bg-yellow-50">
