@@ -3,90 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма расходов v2</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Разделение расходов</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #724e8e, #44185b);
+            margin: 50px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label, input, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            color: black;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4B0082;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #5a0099;
+            transform: scale(1.05);
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+            font-size: 18px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script>
+        const accessCode = 'COMNN2025';
+
+        // Проверка доступа при загрузке страницы
+        window.onload = function() {
+            if (localStorage.getItem('accessGranted') === 'true') {
+                document.getElementById('accessSection').style.display = 'block';
+            } else {
+                document.getElementById('accessSection').style.display = 'none';
+            }
+        };
+
+        function checkAccessCode() {
+            const inputCode = document.getElementById('accessCodeInput').value;
+            if (inputCode === accessCode) {
+                localStorage.setItem('accessGranted', 'true');
+                document.getElementById('accessSection').style.display = 'block';
+                document.getElementById('accessForm').style.display = 'none';
+            } else {
+                alert('Неверный код доступа.');
+            }
+        }
+
+        function addPersonField() {
+            const container = document.getElementById('people');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'people';
+            input.placeholder = 'Имя участника';
+            input.required = true;
+            container.appendChild(input);
+        }
+
+        function toggleCustomCategory() {
+            const categorySelect = document.getElementById('category');
+            const customCategoryInput = document.getElementById('custom-category');
+            if (categorySelect.value === 'custom') {
+                customCategoryInput.style.display = 'block';
+                customCategoryInput.required = true;
+            } else {
+                customCategoryInput.style.display = 'none';
+                customCategoryInput.required = false;
+            }
+        }
+
+        function splitExpenses(event) {
+            event.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const people = document.getElementsByName('people');
+            if (people.length === 0 || isNaN(amount) || amount <= 0) {
+                alert('Введите сумму и добавьте хотя бы одного человека.');
+                return;
+            }
+            const share = (amount / people.length).toFixed(2);
+            let resultHTML = '<strong>Каждый должен заплатить: ' + share + ' тенге</strong><br>';
+            for (let person of people) {
+                resultHTML += person.value + ': ' + share + ' тенге<br>';
+            }
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html">Главная</a>
-            <a href="kakrabotaet.html">Как работает</a>
-            <a href="vosmzhnosti.html">Возможности</a>
-            <a href="expenceform2.html">Расходы v2</a>
-            <a href="login.html">Войти</a>
-        </nav>
-    </header>
+    <h2>Разделение расходов</h2>
 
-    <main>
-        <h1>Учет расходов v2</h1>
-        <section class="expense-form">
-            <form id="expenseForm">
-                <div class="input-group">
-                    <label for="category">Категория:</label>
-                    <select id="category" required>
-                        <option value="">Выберите категорию</option>
-                        <option value="food">Еда</option>
-                        <option value="transport">Транспорт</option>
-                        <option value="utilities">Коммунальные услуги</option>
-                        <option value="entertainment">Развлечения</option>
-                        <option value="other">Другое</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="amount">Сумма:</label>
-                    <input type="number" id="amount" min="0" step="0.01" required>
-                </div>
-                <div class="input-group">
-                    <label for="date">Дата:</label>
-                    <input type="date" id="date" required>
-                </div>
-                <div class="input-group">
-                    <label for="description">Описание:</label>
-                    <textarea id="description"></textarea>
-                </div>
-                <button type="submit">Добавить расход</button>
-            </form>
-            <div class="expense-list">
-                <h2>История расходов</h2>
-                <table id="expenseTable">
-                    <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Категория</th>
-                            <th>Сумма</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
+    <!-- Форма для ввода кода доступа -->
+    <div id="accessForm">
+        <label for="accessCodeInput">Введите код доступа:</label>
+        <input type="text" id="accessCodeInput" required>
+        <button type="button" onclick="checkAccessCode()">Разблокировать доступ</button>
+        <p>Оплата <a href="https://wa.me/77750847104?text=Пожалуйста,%20отправьте%20мне%20код%20доступа." target="_blank">WhatsApp</a>.</p>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 GoSpend. Все права защищены.</p>
-    </footer>
+    <!-- Раздел с функциями доступными после ввода правильного кода -->
+    <div id="accessSection" style="display: none;">
+        <form onsubmit="splitExpenses(event)">
+            <label for="amount">Сумма (тенге):</label>
+            <input type="number" id="amount" name="amount" required>
 
-    <script>
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const category = document.getElementById('category').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const date = document.getElementById('date').value;
-            const description = document.getElementById('description').value;
+            <label for="category">Категория:</label>
+            <select id="category" name="category" required onchange="toggleCustomCategory()">
+                <option value="еда">Еда</option>
+                <option value="транспорт">Транспорт</option>
+                <option value="развлечения">Развлечения</option>
+                <option value="другое">Другое</option>
+                <option value="custom">Другое (свой вариант)</option>
+            </select>
+            <input type="text" id="custom-category" name="custom-category" placeholder="Введите свою категорию" style="display: none;">
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${date}</td>
-                <td>${category}</td>
-                <td>${amount.toFixed(2)} ₽</td>
-                <td>${description}</td>
-            `;
-            document.querySelector('#expenseTable tbody').appendChild(row);
+            <label>Участники:</label>
+            <div id="people"></div>
+            <button type="button" onclick="addPersonField()">Добавить участника</button>
 
-            // Очистка формы
-            this.reset();
-        });
-    </script>
+            <button type="submit">Разделить</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
 </body>
-</html> 
+</html>

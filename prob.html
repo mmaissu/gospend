@@ -1,249 +1,233 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="icon" type="image/svg+xml" href="иконка_круглая.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Чат и Заметки</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f5f5f5; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .chat-messages { height: 300px; overflow-y: auto; padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; }
-        .message { margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .chat-input, .add-user { display: flex; gap: 10px; }
-        input, button, select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em; }
-        button { background: #8b5cf6; color: white; border: none; cursor: pointer; }
-        button:hover { background: #7c3aed; }
-        .expense-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 20px; }
-        .expense-item { display: flex; justify-content: space-between; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чат и Заметки</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl shadow col-span-1">
-            <h2 class="text-xl font-bold mb-4">Создать новый чат</h2>
-            <div class="flex gap-2 mb-4">
-                <input type="text" id="userName" placeholder="Введите имя" class="flex-1 p-2 border rounded">
-                <button onclick="addUser()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить</button>
-            </div>
-            <h3 class="font-semibold mb-2">Участники:</h3>
-            <ul id="userList" class="list-disc list-inside space-y-1"></ul>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow col-span-2">
-            <h2 class="text-xl font-bold mb-4">Заметки</h2>
-            <div id="notesList" class="space-y-2 mb-4"></div>
-            <div class="flex gap-2">
-                <input type="text" id="noteTitle" placeholder="Название заметки" class="flex-1 p-2 border rounded">
-                <button onclick="addNote()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить заметку</button>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow col-span-3">
-            <h2 class="text-xl font-bold mb-4">Добавить расход</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                <input type="number" placeholder="Сумма" id="expenseAmount" class="p-2 border rounded">
-                <select id="expenseCategory" class="p-2 border rounded">
-                    <option value="">Категория</option>
-                    <option value="Продукты">Продукты</option>
-                    <option value="Аренда">Аренда</option>
-                    <option value="Комм услуги">Комм услуги</option>
-                    <option value="Шарики">Шарики</option>
-                </select>
-                <select id="expensePayer" class="p-2 border rounded">
-                    <option value="">Кто платил</option>
-                </select>
-                <button onclick="addExpense()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить</button>
-            </div>
-            <h3 class="font-semibold mb-2">История расходов</h3>
-            <div id="expensesList" class="space-y-2"></div>
-
-            <!-- Кнопка доступна только после оплаты -->
-            <button id="calculateDebtsButton" onclick="calculateDebts()" class="mt-6 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600" disabled>Узнать кто кому должен (Платная услуга 100тг)</button>
-            <div id="debtsList" class="mt-4 text-sm text-gray-700"></div>
-
-            <!-- Форма оплаты (например, при клике на кнопку) -->
-            <button id="payButton" onclick="payNow()" class="mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Оплатить</button>
-            <div id="paymentStatus" class="mt-4 text-green-600 hidden">Оплата прошла успешно! Теперь вы можете узнать кто кому должен.</div>
-        </div>
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-xl shadow col-span-1">
+      <h2 class="text-xl font-bold mb-4">Создать новый чат</h2>
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="userName" placeholder="Введите имя" class="flex-1 p-2 border rounded">
+        <button onclick="addUser()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить</button>
+      </div>
+      <h3 class="font-semibold mb-2">Участники:</h3>
+      <ul id="userList" class="list-disc list-inside space-y-1"></ul>
     </div>
-    <style>background: linear-gradient(to right,#724e8e , #44185b);</style>
-    <script>
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        let notes = JSON.parse(localStorage.getItem('notes')) || [];
-        let isPaid = false;  // Переменная для отслеживания состояния оплаты
 
-        const userList = document.getElementById('userList');
-        const expensePayer = document.getElementById('expensePayer');
-        const expensesList = document.getElementById('expensesList');
-        const notesList = document.getElementById('notesList');
-        const calculateDebtsButton = document.getElementById('calculateDebtsButton');
-        const paymentStatus = document.getElementById('paymentStatus');
-        const payButton = document.getElementById('payButton');
+    <div class="bg-white p-6 rounded-xl shadow col-span-2">
+      <h2 class="text-xl font-bold mb-4">Заметки</h2>
+      <div id="notesList" class="space-y-2 mb-4"></div>
+      <div class="flex gap-2">
+        <input type="text" id="noteTitle" placeholder="Название заметки" class="flex-1 p-2 border rounded">
+        <button onclick="addNote()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить заметку</button>
+      </div>
+    </div>
 
-        function saveData() {
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('expenses', JSON.stringify(expenses));
-            localStorage.setItem('notes', JSON.stringify(notes));
-        }
+    <div class="bg-white p-6 rounded-xl shadow col-span-3">
+      <h2 class="text-xl font-bold mb-4">Добавить расход</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <input type="number" placeholder="Сумма" id="expenseAmount" class="p-2 border rounded">
+        <select id="expenseCategory" class="p-2 border rounded">
+          <option value="">Категория</option>
+          <option value="Продукты">Продукты</option>
+          <option value="Аренда">Аренда</option>
+          <option value="Комм услуги">Комм услуги</option>
+          <option value="Шарики">Шарики</option>
+        </select>
+        <select id="expensePayer" class="p-2 border rounded">
+          <option value="">Кто платил</option>
+        </select>
+        <button onclick="addExpense()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Добавить</button>
+      </div>
+      <h3 class="font-semibold mb-2">История расходов</h3>
+      <div id="expensesList" class="space-y-2"></div>
 
-        function renderUsers() {
-            userList.innerHTML = '';
-            expensePayer.innerHTML = '<option value="">Кто платил</option>';
-            users.forEach(user => {
-                userList.innerHTML += `<li class="flex justify-between items-center">${user} <button onclick="removeUser('${user}')" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Удалить</button></li>`;
-                expensePayer.innerHTML += `<option value="${user}">${user}</option>`;
-            });
-        }
+      <!-- Кнопка доступна только после оплаты -->
+      <button id="calculateDebtsButton" onclick="calculateDebts()" class="mt-6 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600" disabled>Узнать кто кому должен (Платная услуга 100тг)</button>
+      <div id="debtsList" class="mt-4 text-sm text-gray-700"></div>
 
-        function renderExpenses() {
-            expensesList.innerHTML = '';
-            expenses.forEach((exp, index) => {
-                expensesList.innerHTML += `<div class='flex justify-between bg-gray-50 p-3 rounded'>
-                    <div><strong>${exp.payer}</strong> - ${exp.category}</div>
-                    <div>${exp.amount} ₸ (${exp.date})</div>
-                    <button onclick="removeExpense(${index})" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Удалить</button>
-                </div>`;
-            });
-        }
+      <!-- Форма оплаты (например, при клике на кнопку) -->
+      <button id="payButton" onclick="payNow()" class="mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Оплатить</button>
+      <div id="paymentStatus" class="mt-4 text-green-600 hidden">Оплата прошла успешно! Теперь вы можете узнать кто кому должен.</div>
+    </div>
+  </div>
+<style>background: linear-gradient(to right,#724e8e , #44185b);</style>
+  <script>
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
+    let isPaid = false;  // Переменная для отслеживания состояния оплаты
 
-        function renderNotes() {
-            notesList.innerHTML = '';
-            notes.forEach((note, index) => {
-                notesList.innerHTML += `<div class='bg-gray-50 p-4 rounded'>
-                    <h4 class='font-semibold'>${note.title}</h4>
-                    <p>${note.content}</p>
-                    <button onclick="sendToWhatsApp('${note.title}', '${note.content}')" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Отправить в WhatsApp</button>
-                    <button onclick="removeNote(${index})" class="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Удалить заметку</button>
-                </div>`;
-            });
-        }
+    const userList = document.getElementById('userList');
+    const expensePayer = document.getElementById('expensePayer');
+    const expensesList = document.getElementById('expensesList');
+    const notesList = document.getElementById('notesList');
+    const calculateDebtsButton = document.getElementById('calculateDebtsButton');
+    const paymentStatus = document.getElementById('paymentStatus');
+    const payButton = document.getElementById('payButton');
 
-        function addUser() {
-            const userName = document.getElementById('userName').value.trim();
-            if (userName && !users.includes(userName)) {
-                users.push(userName);
-                saveData();
-                renderUsers();
-                document.getElementById('userName').value = '';
-            }
-        }
+    function saveData() {
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      localStorage.setItem('notes', JSON.stringify(notes));
+    }
 
-        function removeUser(userName) {
-            users = users.filter(user => user !== userName);
-            saveData();
-            renderUsers();
-        }
+    function renderUsers() {
+      userList.innerHTML = '';
+      expensePayer.innerHTML = '<option value="">Кто платил</option>';
+      users.forEach(user => {
+        userList.innerHTML += `<li class="flex justify-between items-center">${user} <button onclick="removeUser('${user}')" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Удалить</button></li>`;
+        expensePayer.innerHTML += `<option value="${user}">${user}</option>`;
+      });
+    }
 
-        function addExpense() {
-            const amount = parseFloat(document.getElementById('expenseAmount').value);
-            const category = document.getElementById('expenseCategory').value;
-            const payer = document.getElementById('expensePayer').value;
-            if (amount && category && payer) {
-                const newExpense = {
-                    amount,
-                    category,
-                    payer,
-                    date: new Date().toLocaleDateString()
-                };
-                expenses.push(newExpense);
-                saveData();
-                renderExpenses();
-                document.getElementById('expenseAmount').value = '';
-                document.getElementById('expenseCategory').value = '';
-                document.getElementById('expensePayer').value = '';
-            }
-        }
+    function renderExpenses() {
+      expensesList.innerHTML = '';
+      expenses.forEach((exp, index) => {
+        expensesList.innerHTML += `<div class='flex justify-between bg-gray-50 p-3 rounded'>
+          <div><strong>${exp.payer}</strong> - ${exp.category}</div>
+          <div>${exp.amount} ₸ (${exp.date})</div>
+          <button onclick="removeExpense(${index})" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Удалить</button>
+        </div>`;
+      });
+    }
 
-        function removeExpense(index) {
-            expenses.splice(index, 1);
-            saveData();
-            renderExpenses();
-        }
+    function renderNotes() {
+      notesList.innerHTML = '';
+      notes.forEach((note, index) => {
+        notesList.innerHTML += `<div class='bg-gray-50 p-4 rounded'>
+          <h4 class='font-semibold'>${note.title}</h4>
+          <p>${note.content}</p>
+          <button onclick="sendToWhatsApp('${note.title}', '${note.content}')" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Отправить в WhatsApp</button>
+          <button onclick="removeNote(${index})" class="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Удалить заметку</button>
+        </div>`;
+      });
+    }
 
-        function addNote() {
-            const title = document.getElementById('noteTitle').value.trim();
-            const content = prompt('Введите содержание заметки:');
-            if (title && content) {
-                const newNote = { title, content };
-                notes.push(newNote);
-                saveData();
-                renderNotes();
-                document.getElementById('noteTitle').value = '';
-            }
-        }
-
-        function removeNote(index) {
-            notes.splice(index, 1);
-            saveData();
-            renderNotes();
-        }
-
-        function sendToWhatsApp(title, content) {
-            const message = `Заметка: ${title}\n\n${content}`;
-            const phoneNumber = prompt("Введите номер телефона для отправки в WhatsApp (в формате: +1234567890):");
-            if (phoneNumber) {
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
-            }
-        }
-
-        // Функция для выполнения оплаты
-        function payNow() {
-            const message = "Я оплатил! Пожалуйста, подтвердите мою оплату.";
-            const yourPhoneNumber = "77081678766";  // Укажите ваш номер телефона без знака "+" (например, 1234567890)
-            const whatsappUrl = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-
-            // После отправки в WhatsApp, активируем кнопку "Разделить"
-            payButton.disabled = true;  // Отключаем кнопку оплаты
-            paymentStatus.classList.remove('hidden'); // Показываем сообщение об успешной оплате
-            calculateDebtsButton.disabled = false; // Активируем кнопку раздела долгов
-        }
-
-        function calculateDebts() {
-            const balances = {};
-            users.forEach(user => balances[user] = 0);
-
-            expenses.forEach(exp => {
-                const share = exp.amount / users.length;
-                users.forEach(user => {
-                    if (user === exp.payer) {
-                        balances[user] += exp.amount - share;
-                    } else {
-                        balances[user] -= share;
-                    }
-                });
-            });
-
-            const result = [];
-            const sortedUsers = [...users];
-
-            while (true) {
-                sortedUsers.sort((a, b) => balances[a] - balances[b]);
-                const debtor = sortedUsers[0];
-                const creditor = sortedUsers[sortedUsers.length - 1];
-
-                if (balances[debtor] >= -1 || balances[creditor] <= 1) break;
-
-                const amount = Math.min(-balances[debtor], balances[creditor]);
-                balances[debtor] += amount;
-                balances[creditor] -= amount;
-
-                result.push(`${debtor} должен ${creditor}: ${amount.toFixed(0)} ₸`);
-            }
-
-            document.getElementById('debtsList').innerHTML = result.length ? result.join('<br>') : 'Никто никому ничего не должен.';
-        }
-
+    function addUser() {
+      const userName = document.getElementById('userName').value.trim();
+      if (userName && !users.includes(userName)) {
+        users.push(userName);
+        saveData();
         renderUsers();
+        document.getElementById('userName').value = '';
+      }
+    }
+
+    function removeUser(userName) {
+      users = users.filter(user => user !== userName);
+      saveData();
+      renderUsers();
+    }
+
+    function addExpense() {
+      const amount = parseFloat(document.getElementById('expenseAmount').value);
+      const category = document.getElementById('expenseCategory').value;
+      const payer = document.getElementById('expensePayer').value;
+      if (amount && category && payer) {
+        const newExpense = {
+          amount,
+          category,
+          payer,
+          date: new Date().toLocaleDateString()
+        };
+        expenses.push(newExpense);
+        saveData();
         renderExpenses();
+        document.getElementById('expenseAmount').value = '';
+        document.getElementById('expenseCategory').value = '';
+        document.getElementById('expensePayer').value = '';
+      }
+    }
+
+    function removeExpense(index) {
+      expenses.splice(index, 1);
+      saveData();
+      renderExpenses();
+    }
+
+    function addNote() {
+      const title = document.getElementById('noteTitle').value.trim();
+      const content = prompt('Введите содержание заметки:');
+      if (title && content) {
+        const newNote = { title, content };
+        notes.push(newNote);
+        saveData();
         renderNotes();
-    </script>
+        document.getElementById('noteTitle').value = '';
+      }
+    }
+
+    function removeNote(index) {
+      notes.splice(index, 1);
+      saveData();
+      renderNotes();
+    }
+
+    function sendToWhatsApp(title, content) {
+      const message = `Заметка: ${title}\n\n${content}`;
+      const phoneNumber = prompt("Введите номер телефона для отправки в WhatsApp (в формате: +1234567890):");
+      if (phoneNumber) {
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+      }
+    }
+
+    // Функция для выполнения оплаты
+    function payNow() {
+      const message = "Я оплатил! Пожалуйста, подтвердите мою оплату.";
+      const yourPhoneNumber = "77081678766";  // Укажите ваш номер телефона без знака "+" (например, 1234567890)
+      const whatsappUrl = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+
+      // После отправки в WhatsApp, активируем кнопку "Разделить"
+      payButton.disabled = true;  // Отключаем кнопку оплаты
+      paymentStatus.classList.remove('hidden'); // Показываем сообщение об успешной оплате
+      calculateDebtsButton.disabled = false; // Активируем кнопку раздела долгов
+    }
+
+    function calculateDebts() {
+      const balances = {};
+      users.forEach(user => balances[user] = 0);
+
+      expenses.forEach(exp => {
+        const share = exp.amount / users.length;
+        users.forEach(user => {
+          if (user === exp.payer) {
+            balances[user] += exp.amount - share;
+          } else {
+            balances[user] -= share;
+          }
+        });
+      });
+
+      const result = [];
+      const sortedUsers = [...users];
+
+      while (true) {
+        sortedUsers.sort((a, b) => balances[a] - balances[b]);
+        const debtor = sortedUsers[0];
+        const creditor = sortedUsers[sortedUsers.length - 1];
+
+        if (balances[debtor] >= -1 || balances[creditor] <= 1) break;
+
+        const amount = Math.min(-balances[debtor], balances[creditor]);
+        balances[debtor] += amount;
+        balances[creditor] -= amount;
+
+        result.push(`${debtor} должен ${creditor}: ${amount.toFixed(0)} ₸`);
+      }
+
+      document.getElementById('debtsList').innerHTML = result.length ? result.join('<br>') : 'Никто никому ничего не должен.';
+    }
+
+    renderUsers();
+    renderExpenses();
+    renderNotes();
+  </script>
 </body>
 </html>
