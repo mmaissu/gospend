@@ -3,58 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор кредита</title>
+    <title>Калькулятор кредита - GoSpend</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .bg-custom-gradient {
             background: linear-gradient(to right, #724e8e, #44185b);
-            color: black;
-            text-align: center;
-            margin: 0;
-            padding: 0;
         }
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            background:  #E6E6FA;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        .bg-custom-light {
+            background-color: #E6E6FA;
         }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .text-custom-purple {
+            color: #8A2BE2;
         }
-        input {
-            background: white;
-            color: black;
-        }
-        button {
-            background: #8A2BE2;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #7B1FA2;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
+        .hover-custom-purple:hover {
+            background-color: #7B1FA2;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Калькулятор кредита</h2>
-        <input type="number" id="loanAmount" placeholder="Сумма кредита (в тенге)" min="1">
-        <input type="number" id="interestRate" placeholder="Процентная ставка (в % годовых)" min="0" step="0.1">
-        <input type="number" id="loanTerm" placeholder="Срок кредита (в месяцах)" min="1">
-        <button onclick="calculateLoan()">Рассчитать</button>
-        <div class="result" id="result"></div>
+<body class="bg-custom-gradient min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-custom-light rounded-xl shadow-2xl p-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-custom-purple mb-2">Калькулятор кредита</h2>
+            <p class="text-gray-600">Рассчитайте ежемесячный платеж и переплату по кредиту</p>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label for="loanAmount" class="block text-sm font-medium text-gray-700 mb-1">Сумма кредита (в тенге)</label>
+                <input type="number" id="loanAmount" placeholder="Введите сумму" min="1" 
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-custom-purple focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="interestRate" class="block text-sm font-medium text-gray-700 mb-1">Процентная ставка (в % годовых)</label>
+                <input type="number" id="interestRate" placeholder="Введите процентную ставку" min="0" step="0.1"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-custom-purple focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="loanTerm" class="block text-sm font-medium text-gray-700 mb-1">Срок кредита (в месяцах)</label>
+                <input type="number" id="loanTerm" placeholder="Введите срок" min="1"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-custom-purple focus:border-transparent">
+            </div>
+
+            <button onclick="calculateLoan()" 
+                class="w-full bg-custom-purple text-white py-3 rounded-lg font-semibold hover-custom-purple transition duration-300">
+                Рассчитать
+            </button>
+        </div>
+
+        <div id="result" class="mt-8 space-y-2 hidden">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <p class="text-gray-700"><span class="font-semibold">Ежемесячный платеж:</span> <span id="monthlyPayment" class="text-custom-purple"></span> тг.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <p class="text-gray-700"><span class="font-semibold">Общая сумма выплат:</span> <span id="totalPayment" class="text-custom-purple"></span> тг.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <p class="text-gray-700"><span class="font-semibold">Переплата по процентам:</span> <span id="totalInterest" class="text-custom-purple"></span> тг.</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -65,7 +74,8 @@
             let resultDiv = document.getElementById('result');
 
             if (amount <= 0 || isNaN(amount) || interestRate < 0 || isNaN(interestRate) || term <= 0 || isNaN(term)) {
-                resultDiv.innerHTML = "Введите корректные данные";
+                resultDiv.innerHTML = '<div class="bg-red-100 p-4 rounded-lg text-red-700">Пожалуйста, введите корректные данные</div>';
+                resultDiv.classList.remove('hidden');
                 return;
             }
 
@@ -73,11 +83,11 @@
             let totalPayment = monthlyPayment * term;
             let totalInterest = totalPayment - amount;
 
-            resultDiv.innerHTML = `
-                <p>Ежемесячный платеж: ${monthlyPayment.toFixed(2)} тг.</p>
-                <p>Общая сумма выплат: ${totalPayment.toFixed(2)} тг.</p>
-                <p>Переплата по процентам: ${totalInterest.toFixed(2)} тг.</p>
-            `;
+            document.getElementById('monthlyPayment').textContent = monthlyPayment.toFixed(2);
+            document.getElementById('totalPayment').textContent = totalPayment.toFixed(2);
+            document.getElementById('totalInterest').textContent = totalInterest.toFixed(2);
+            
+            resultDiv.classList.remove('hidden');
         }
     </script>
 </body>
