@@ -130,11 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Разрешает запросы с любого домена (для тестирования)
-<<<<<<< HEAD
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
-=======
->>>>>>> e830f37d388f326c38207ee81c0965d604047d1b
+
