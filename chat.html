@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Планирование бюджета</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .members-list {
+            grid-row: span 2;
+        }
+
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .positive {
+            color: #22c55e;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        .chat-container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #7c3aed;
+        }
+
+        .expense-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .expense-list {
+            grid-column: 1 / -1;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Список участников -->
+        <div class="card members-list">
+            <h2 class="title">
+                <i class="fas fa-users icon"></i>
+                Участники
+            </h2>
+            <div id="membersList">
+                <div class="member-item">
+                    <span>Анна</span>
+                    <span class="negative">-1250 ₽</span>
+                </div>
+                <div class="member-item">
+                    <span>Петр</span>
+                    <span class="positive">+2500 ₽</span>
+                </div>
+                <div class="member-item">
+                    <span>Мария</span>
+                    <span class="negative">-1250 ₽</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Чат группы -->
+        <div class="card chat-container">
+            <h2 class="title">
+                <i class="fas fa-comments icon"></i>
+                Обсуждение расходов
+            </h2>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message">
+                    <div class="message-header">
+                        <span>Анна</span>
+                        <span>10:30</span>
+                    </div>
+                    <div class="message-content">
+                        Добавила расходы на продукты
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="message-header">
+                        <span>Петр</span>
+                        <span>11:45</span>
+                    </div>
+                    <div class="message-content">
+                        Оплатил аренду
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введите сообщение..." id="messageInput">
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Форма добавления расходов -->
+        <div class="card expense-list">
+            <h2 class="title">
+                <i class="fas fa-receipt icon"></i>
+                Добавить расход
+            </h2>
+            <div class="expense-form">
+                <input type="number" placeholder="Сумма" id="expenseAmount">
+                <select id="expenseCategory">
+                    <option value="">Выберите категорию</option>
+                    <option value="food">Продукты</option>
+                    <option value="rent">Аренда</option>
+                    <option value="transport">Транспорт</option>
+                    <option value="entertainment">Развлечения</option>
+                    <option value="travel">Путешествия</option>
+                    <option value="other">Прочее</option>
+                </select>
+                <select id="expensePayer">
+                    <option value="">Кто платил</option>
+                    <option value="anna">Анна</option>
+                    <option value="petr">Петр</option>
+                    <option value="maria">Мария</option>
+                </select>
+                <button onclick="addExpense()">Добавить</button>
+            </div>
+
+            <h2 class="title">История расходов</h2>
+            <div id="expensesList">
+                <div class="expense-item">
+                    <div>
+                        <span class="title">Анна</span>
+                        <span>• Продукты</span>
+                    </div>
+                    <div>
+                        <span class="title">2500 ₽</span>
+                        <span>16.02.2024</span>
+                    </div>
+                </div>
+                <div class="expense-item">
+                    <div>
+                        <span class="title">Петр</span>
+                        <span>• Аренда</span>
+                    </div>
+                    <div>
+                        <span class="title">30000 ₽</span>
+                        <span>16.02.2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messages = document.getElementById('chatMessages');
+
+            if (input.value.trim()) {
+                const now = new Date();
+                const time = now.getHours() + ':' + now.getMinutes().toString().padStart(2, '0');
+
+                const messageHtml = `
+                    <div class="message">
+                        <div class="message-header">
+                            <span>Вы</span>
+                            <span>${time}</span>
+                        </div>
+                        <div class="message-content">
+                            ${input.value}
+                        </div>
+                    </div>
+                `;
+
+                messages.innerHTML += messageHtml;
+                messages.scrollTop = messages.scrollHeight;
+                input.value = '';
+            }
+        }
+
+        function addExpense() {
+            const amount = document.getElementById('expenseAmount').value;
+            const category = document.getElementById('expenseCategory');
+            const payer = document.getElementById('expensePayer');
+            const expenses = document.getElementById('expensesList');
+
+            if (amount && category.value && payer.value) {
+                const now = new Date();
+                const date = now.toLocaleDateString();
+
+                const expenseHtml = `
+                    <div class="expense-item">
+                        <div>
+                            <span class="title">${payer.options[payer.selectedIndex].text}</span>
+                            <span>• ${category.options[category.selectedIndex].text}</span>
+                        </div>
+                        <div>
+                            <span class="title">${amount} ₽</span>
+                            <span>${date}</span>
+                        </div>
+                    </div>
+                `;
+
+                expenses.innerHTML = expenseHtml + expenses.innerHTML;
+
+                // Очистка формы
+                document.getElementById('expenseAmount').value = '';
+                category.value = '';
+                payer.value = '';
+            }
+        }
+
+        // Обработка нажатия Enter в чате
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Қаржылық сауаттылық бойынша чат</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to right, #d3cce3, #e9e4f0);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #back-button:hover {
+            background-color: #a29bfe;
+        }
+        h2 {
+            color: #4b0082;
+        }
+        #chat-box {
+            width: 100%;
+            max-width: 650px;
+            border: 2px solid #a29bfe;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f6f3ff;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #chat-box div {
+            margin-bottom: 8px;
+        }
+        input, button {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        input {
+            width: 65%;
+            margin-right: 10px;
+        }
+        #send-button {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #a29bfe;
+        }
+    </style>
+</head>
+<body>
+
+<button id="back-button" onclick="goBack()">← Назад</button>
+
+<h2>Чат с ботом по финансовой грамотности / Қаржылық сауаттылық бойынша бот</h2>
+
+<div id="chat-box"></div>
+
+<div>
+    <input id="user-input" type="text" placeholder="Сұрақ қойыңыз / Задай вопрос...">
+    <button id="send-button" onclick="sendMessage()">Жіберу</button>
+</div>
+
+<script>
+    function goBack() {
+        // Вернуться назад, либо на index.html
+        if (document.referrer) {
+            window.history.back();
+        } else {
+            window.location.href = "index.html";
+        }
+    }
+
+    const responses = {
+        "привет": "Привет! Чем могу помочь по теме финансов?",
+        "сәлем": "Сәлем! Қаржылық сауаттылық туралы не білгің келеді?",
+        "как дела": "У меня всё отлично, готов помочь!",
+        "қал қалай": "Жақсы! Қаржы туралы сұрағың болса, жауап берем.",
+        "что ты умеешь": "Я могу объяснять базовые финансовые понятия.",
+        "сен не істей аласың": "Мен қаржы туралы пайдалы ақпарат бере аламын.",
+        "что такое финансовая грамотность": "Это умение управлять деньгами: тратить, копить, зарабатывать.",
+        "қаржылық сауаттылық деген не": "Бұл ақша табу, жұмсау және үнемдеу дағдылары.",
+        "зачем нужна финансовая грамотность": "Чтобы избегать долгов и грамотно распоряжаться деньгами.",
+        "қаржылық сауаттылық не үшін қажет": "Ақшаңызды тиімді басқару үшін қажет.",
+        "как научиться финансовой грамотности": "Читайте книги, смотрите видео, практикуйтесь каждый день.",
+        "қаржылық сауаттылықты қалай үйренуге болады": "Кітап оқы, бейнелер қара, тәжірибе жаса.",
+        "что такое бюджет": "Бюджет — это план доходов и расходов.",
+        "бюджет деген не": "Бюджет — табыс пен шығын жоспары.",
+        "как составить бюджет": "Запиши доходы и расходы, выдели деньги на нужды.",
+        "бюджет қалай құрылады": "Табыс пен шығындарды жазып, басымдыққа қарай бөлің.",
+        "что такое кредит": "Кредит — это заём денег под проценты.",
+        "несие деген не": "Несие — бұл пайызбен қарызға алынған ақша.",
+        "что такое депозит": "Депозит — это вклад в банк под проценты.",
+        "депозит деген не": "Депозит — банкке ақша салу және пайыз табу.",
+        "что такое инвестиции": "Инвестиции — это вложения денег в активы для прибыли.",
+        "инвестиция деген не": "Инвестиция — табыс табу үшін ақша салу.",
+        "что такое инфляция": "Инфляция — рост цен и снижение покупательной способности денег.",
+        "инфляция деген не": "Инфляция — бағаның өсуі және ақша құнының төмендеуі.",
+        "как защитить деньги от инфляции": "Инвестируй в активы и валюту.",
+        "ақшаны инфляциядан қалай сақтау керек": "Инвестиция жаса немесе шетел валютасында сақта.",
+        "как начать копить деньги": "Откладывай хотя бы 10% от дохода.",
+        "ақшаны қалай үнемдеуге болады": "Табысымның 10% жинап баста.",
+        "что делать если не получается копить": "Анализируй расходы и сократи лишнее.",
+        "үнемдеу қиын болса не істеу керек": "Шығындарыңды қарап, қажетсізін қысқарт.",
+        "дай совет": "Трать меньше, чем зарабатываешь.",
+        "кеңес бер": "Тапқаныңнан аз жұмсауды үйрен.",
+        "дай финансовый лайфхак": "Пользуйся правилом 50/30/20: 50% — нужды, 30% — желания, 20% — сбережения."
+    };
+
+    function sendMessage() {
+        const input = document.getElementById("user-input");
+        const message = input.value.trim().toLowerCase();
+        if (!message) return;
+
+        const box = document.getElementById("chat-box");
+        box.innerHTML += `<div><strong>Сен:</strong> ${message}</div>`;
+        input.value = "";
+
+        const answer = Object.keys(responses).find(key => message.includes(key));
+        const reply = answer ? responses[answer] : "Кешір, мен бұл сұраққа жауап бере алмаймын.";
+
+        box.innerHTML += `<div><strong>Бот:</strong> ${reply}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
+
+</body>
+</html>

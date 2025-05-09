@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькуляторы</title>
+  <link rel="icon" type="image/svg+xml" href="иконка_круглая.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right,#724e8e , #44185b);
+      color: #4a148c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #ede7f6;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(74, 20, 140, 0.2);
+      max-width: 600px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin: 10px 0;
+      padding: 15px 25px;
+      background-color: #7e57c2;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #5e35b1;
+    }
+
+    .description {
+      font-size: 15px;
+      color: #4a148c;
+      margin-top: 5px;
+    }
+
+    #accessSection {
+      margin-top: 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 60%;
+      margin-top: 10px;
+    }
+
+    #statusMessage {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .calculator a.disabled {
+      pointer-events: none;
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добро пожаловать!</h1>
+    <div class="intro">
+      Здесь вы найдёте полезные калькуляторы. Доступ к ним открывается после оплаты.
+    </div>
+
+    <div class="calculator">
+      <a href="credit.html" id="creditBtn" class="btn disabled">Кредитный калькулятор</a>
+      <div class="description">Рассчёт кредита</div>
+    </div>
+
+    <div class="calculator">
+      <a href="hourlyearnings.html" id="hourlyBtn" class="btn disabled">Почасовой доход</a>
+      <div class="description">Заработок в час</div>
+    </div>
+
+    <div class="calculator">
+      <a href="tips.html" id="tipsBtn" class="btn disabled">Калькулятор чаевых</a>
+      <div class="description">Рассчёт чаевых и счёта</div>
+    </div>
+
+    <div id="accessSection">
+      <a href="https://wa.me/77750847104?text=Здравствуйте!%20Хочу%20оплатить%20и%20получить%20доступ%20к%20калькуляторам." class="btn" target="_blank">Оплатить и получить код</a>
+
+      <div>
+        <p style="margin-top:20px;">Уже оплатили? Введите код доступа:</p>
+        <input type="text" id="accessCodeInput" placeholder="Введите код">
+        <div>
+          <button onclick="checkAccessCode()" class="btn">Разблокировать</button>
+        </div>
+        <div id="statusMessage"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const secretCode = "ACCESS2025";
+
+    function unlockCalculators() {
+      document.getElementById("creditBtn").classList.remove("disabled");
+      document.getElementById("hourlyBtn").classList.remove("disabled");
+      document.getElementById("tipsBtn").classList.remove("disabled");
+    }
+
+    function checkAccessCode() {
+      const inputCode = document.getElementById("accessCodeInput").value.trim();
+      const statusMessage = document.getElementById("statusMessage");
+
+      if (inputCode === secretCode) {
+        localStorage.setItem("access_granted", "true");
+        unlockCalculators();
+        statusMessage.textContent = "Доступ успешно разблокирован!";
+        statusMessage.style.color = "green";
+      } else {
+        statusMessage.textContent = "Неверный код. Попробуйте снова.";
+        statusMessage.style.color = "red";
+      }
+    }
+
+    // Проверка доступа при загрузке страницы
+    window.onload = () => {
+      if (localStorage.getItem("access_granted") === "true") {
+        unlockCalculators();
+      }
+    };
+  </script>
+</body>
+</html>

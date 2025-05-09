@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoSpend - Калькулятор</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script>
+        function calculate() {
+            let amount1 = parseFloat(document.getElementById('amount1').value) || 0;
+            let amount2 = parseFloat(document.getElementById('amount2').value) || 0;
+            let total = amount1 + amount2;
+            document.getElementById('result').innerText = `Общий расход: ${total}₽`;
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-bold text-center mb-4">Калькулятор расходов</h2>
+        <div class="mb-4">
+            <label class="block text-gray-700">Сумма 1:</label>
+            <input type="number" id="amount1" class="w-full p-2 border rounded-lg">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Сумма 2:</label>
+            <input type="number" id="amount2" class="w-full p-2 border rounded-lg">
+        </div>
+        <button onclick="calculate()" class="w-full bg-blue-500 text-white py-2 rounded-lg">Рассчитать</button>
+        <p id="result" class="mt-4 text-center text-lg font-semibold"></p>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор бюджета</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        input, select, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор бюджета</h1>
+        <form id="transaction-form">
+            <input type="text" id="title" placeholder="Название" required>
+            <input type="number" id="amount" placeholder="Сумма" required>
+            <select id="category">
+                <option value="income">Доход</option>
+                <option value="expense">Расход</option>
+            </select>
+            <button type="submit">Добавить</button>
+        </form>
+        <h2>Транзакции</h2>
+        <ul id="transaction-list"></ul>
+        <h2>Баланс: <span id="balance">0</span> руб.</h2>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("transaction-form");
+            const transactionList = document.getElementById("transaction-list");
+            const balanceDisplay = document.getElementById("balance");
+            let balance = 0;
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const title = document.getElementById("title").value;
+                const amount = parseFloat(document.getElementById("amount").value);
+                const category = document.getElementById("category").value;
+
+                if (isNaN(amount) || amount <= 0) {
+                    alert("Введите корректную сумму");
+                    return;
+                }
+
+                const listItem = document.createElement("li");
+                listItem.textContent = `${title}: ${amount} руб. (${category === "income" ? "Доход" : "Расход"})`;
+                transactionList.appendChild(listItem);
+
+                balance += category === "income" ? amount : -amount;
+                balanceDisplay.textContent = balance;
+
+                form.reset();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="icon" type="image/svg+xml" href="иконка_круглая.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как это работает - CoSpend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(to right,#724e8e , #44185b);
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: #ffffff;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .step {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 30px;
+        }
+
+        .step-content {
+            padding: 20px;
+            background: #4d2776d4;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+            border: 1px solid #401d686e;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: -20px;
+            background: #ffffff;
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b0082;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step:nth-child(even) {
+            left: 50%;
+        }
+
+        .step:nth-child(odd) {
+            left: 0;
+        }
+
+        .step:nth-child(even)::after {
+            left: -20px;
+        }
+
+        .step:nth-child(1)::after { content: '1'; }
+        .step:nth-child(2)::after { content: '2'; }
+        .step:nth-child(3)::after { content: '3'; }
+        .step:nth-child(4)::after { content: '4'; }
+        .step:nth-child(5)::after { content: '5'; }
+
+        .step h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .step {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .step::after {
+                left: 11px;
+            }
+
+            .step:nth-child(even) {
+                left: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Как это работает</h2>
+        
+        <div class="timeline">
+            <div class="step">
+                <div class="step-content">
+                    <h3>Добавьте участников в группу</h3>
+                    <p>Создайте группу и пригласите друзей, родных или коллег</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-content">
+                    <h3>Вносите расходы</h3>
+                    <p>Указывайте сумму, категорию и плательщика для каждого расхода</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-content">
+                    <h3>Автоматический расчет</h3>
+                    <p>Система сама посчитает, кто кому должен и сколько</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-content">
+                    <h3>Получайте уведомления</h3>
+                    <p>Будьте в курсе новых расходов и изменений в балансе</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-content">
+                    <h3>Анализируйте траты</h3>
+                    <p>Отслеживайте статистику расходов в реальном времени</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
